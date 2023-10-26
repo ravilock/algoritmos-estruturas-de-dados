@@ -147,10 +147,11 @@ class List:
 
     def _slice_deletion(self, index):
         start, stop, step = self._destructure_slice(index)
-
-        # print("1-", start, stop, step)
-        # print("2-", index.indices(len(self))) # Use this function to debug and test
-        print(start, stop, step)
+        # print(f"Start: {start}, Stop: {stop}, Step: {step}")
+        if step < 0:
+            for i in range(start, stop, step):
+                del self[i]
+            return
         previousNode = None
         currentNode = self.__first
         for _ in range(start):
@@ -158,9 +159,9 @@ class List:
             currentNode = currentNode.next
 
         for _ in range(start, stop, step):
-            print("A", self.__first == self.__last)
-            print("B", currentNode == self.__last)
-            print("C", currentNode == self.__first)
+            # print("A", self.__first == self.__last)
+            # print("B", currentNode == self.__last)
+            # print("C", currentNode == self.__first)
             if self.__first == self.__last:
                 self.__first = None
                 self.__last = None
@@ -186,7 +187,7 @@ class List:
             previousNode.setNext(currentNode.next)
             currentNode.setNext(None)
             self.__length -= 1
-            print(len(self), self, previousNode.value, currentNode.value)
+            # print(len(self), self, previousNode.value, currentNode.value)
             for _ in range(step - 1):
                 previousNode = currentNode
                 currentNode = currentNode.next if currentNode.next is not None else self.__last

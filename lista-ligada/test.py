@@ -215,18 +215,32 @@ class TestList(unittest.TestCase):
         self.assertEqual(lista, List(1))
 
         # Negative Stop
-        # everything except the last item
+        # Del slicing everything except the last item
         lista = List(1, 2, 3, 4, 5)
         del lista[:-1]
         self.assertEqual(lista, List(5))
-        # everything except the two last item
+        # Del slicing everything except the two last item
         lista = List(1, 2, 3, 4, 5)
         del lista[:-2]
         self.assertEqual(lista, List(4, 5))
-        # everything except the three last item
+        # Del slicing everything except the three last item
         lista = List(1, 2, 3, 4, 5)
         del lista[:-3]
         self.assertEqual(lista, List(3, 4, 5))
+
+        # Negative Step:
+        # Del slicing the first two items, reversed
+        lista = List(1, 2, 3, 4, 5)
+        del lista[1::-1]
+        self.assertEqual(lista, List(3, 4, 5))
+        # Del slicing the last two items, reversed
+        lista = List(1, 2, 3, 4, 5)
+        del lista[:-3:-1]
+        self.assertEqual(lista, List(1, 2, 3))
+        lista = List(1, 2, 3, 4, 5)
+        # everything except the last two items, reversed
+        del lista[-3::-1]
+        self.assertEqual(lista, List(4, 5))
 
 
     def test_list_append(self):
