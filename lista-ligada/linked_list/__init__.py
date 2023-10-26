@@ -87,7 +87,7 @@ class List:
         else:
             return self._getItem(index)
 
-    def _process_slice(self, index):
+    def _destructure_slice(self, index):
         step = index.step if index.step is not None else 1
         if step > 0:
             start = index.start if index.start is not None else 0
@@ -106,7 +106,7 @@ class List:
 
 
     def _slice(self, index):
-        start, stop, step = self._process_slice(index)
+        start, stop, step = self._destructure_slice(index)
 
         # print("1-", start, stop, step)
         # print("2-", index.indices(len(self))) # Use this function to debug and test
