@@ -162,6 +162,73 @@ class TestList(unittest.TestCase):
         del lista[0]
         self.assertEqual(lista, List())
 
+    def test_list_delitem_slicing(self):
+        """
+        Test that it can delete an item using slices
+        """
+        # Del Slicing a list from its start to above its length
+        lista = List(5)
+        del lista[0:2]
+        self.assertEqual(lista, List())
+        # Del Slicing from its start to its stop-1
+        lista = List(1, 2, 3, 4, 5)
+        del lista[0:3]
+        self.assertEqual(lista, List(4, 5))
+        # Del slicing from start to end of list
+        lista = List(1, 2, 3, 4, 5)
+        del lista[0:]
+        self.assertEqual(lista, List())
+        # Del slicing from index 1 to end
+        lista = List(1, 2, 3)
+        del lista[1:]
+        self.assertEqual(lista, List(1))
+        # Del slicing from index 2 to end
+        lista = List(1, 2, 3)
+        del lista[2:]
+        self.assertEqual(lista, List(1, 2))
+        # Del slicing from index 3 to end
+        lista = List(1, 2, 3)
+        del lista[3:]
+        self.assertEqual(lista, List(1, 2, 3))
+        # Del slicing the whole list
+        lista = List(1, 2, 3, 4, 5)
+        del lista[:]
+        self.assertEqual(lista, List())
+        # Using the step
+        lista = List(1, 2, 3, 4)
+        del lista[::2]
+        self.assertEqual(lista, List(2, 4))
+        lista = List(1, 2, 3, 4)
+        del lista[1::2]
+        self.assertEqual(lista, List(1, 3))
+        lista = List(1, 2, 3, 4)
+        del lista[::3]
+        self.assertEqual(lista, List(2, 3))
+        
+        # Negative Start
+        # Del slicing last element of list
+        lista = List(1, 2, 3, 4)
+        del lista[-1:]
+        self.assertEqual(lista, List(1, 2, 3))
+        # Del slicing last two elements of list
+        del lista[-2:]
+        self.assertEqual(lista, List(1))
+
+        # Negative Stop
+        # everything except the last item
+        lista = List(1, 2, 3, 4, 5)
+        del lista[:-1]
+        self.assertEqual(lista, List(5))
+        # everything except the two last item
+        lista = List(1, 2, 3, 4, 5)
+        del lista[:-2]
+        self.assertEqual(lista, List(4, 5))
+        # everything except the three last item
+        lista = List(1, 2, 3, 4, 5)
+        del lista[:-3]
+        self.assertEqual(lista, List(3, 4, 5))
+
+
     def test_list_append(self):
         """
         Test that it can append values

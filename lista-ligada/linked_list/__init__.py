@@ -139,29 +139,81 @@ class List:
         atual.value = value
 
     # falta implementar deleção por fatia
-    def __delitem__(self, position):
-        if position < 0:
-            position += len(self)
+    def __delitem__(self, index):
+        if isinstance(index, slice):
+            return self._slice_deletion(index)
+        else:
+            return self._delItem(index)
 
-        if position < 0 or position >= len(self):
+    def _slice_deletion(self, index):
+        start, stop, step = self._destructure_slice(index)
+
+        # print("1-", start, stop, step)
+        # print("2-", index.indices(len(self))) # Use this function to debug and test
+        print(start, stop, step)
+        previousNode = None
+        currentNode = self.__first
+        for _ in range(start):
+            previousNode = currentNode
+            currentNode = currentNode.next
+
+        for _ in range(start, stop, step):
+            print("A", self.__first == self.__last)
+            print("B", currentNode == self.__last)
+            print("C", currentNode == self.__first)
+            if self.__first == self.__last:
+                self.__first = None
+                self.__last = None
+                self.__length = 0
+                return
+            
+            if currentNode == self.__last:
+                self.__last = previousNode
+                previousNode.setNext(None)
+                self.__length -= 1
+                return
+            
+            if currentNode == self.__first:
+                self.__first = self.__first.next
+                self.__length -= 1
+                previousNode = currentNode
+                currentNode = currentNode.next
+                for _ in range(step - 1):
+                    previousNode = currentNode
+                    currentNode = currentNode.next if currentNode.next is not None else self.__last
+                continue
+
+            previousNode.setNext(currentNode.next)
+            currentNode.setNext(None)
+            self.__length -= 1
+            print(len(self), self, previousNode.value, currentNode.value)
+            for _ in range(step - 1):
+                previousNode = currentNode
+                currentNode = currentNode.next if currentNode.next is not None else self.__last
+            
+    def _delItem(self, index):
+        if index < 0:
+            index += len(self)
+
+        if index < 0 or index >= len(self):
             raise IndexError("List index out of range")
 
         self.__length -= 1
         
         if self.__first == self.__last:
-            self.__first == None
-            self.__last == None
+            self.__first = None
+            self.__last = None
             return
         
-        if position == 0:
+        if index == 0:
             self.__first = self.__first.next
             return
 
         atual = self.__first
-        for _ in range(position - 1):
+        for _ in range(index - 1):
             atual = atual.next
 
-        if position == self.__length:
+        if index == self.__length:
             atual.next = None
             self.__last = atual
         else:
