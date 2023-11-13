@@ -23,10 +23,8 @@ class Map:
     def ocupation(self):
         return self.length / self.number_of_buckets
 
-    def resize(self, new_size):
-        old_num_of_buckets = self.number_of_buckets
+    def _resize(self, new_size):
         old_buckets = self.buckets
-        old_length = self.length
         self.number_of_buckets = new_size
         self.buckets = [[] for _ in range(self.number_of_buckets)]
         self.length = 0
@@ -47,7 +45,7 @@ class Map:
         bucket.append(Node(key, value))
         self.length += 1
         if self.ocupation > self.expand_threshold:
-            self.resize(self.number_of_buckets * self.resize_factor)
+            self._resize(self.number_of_buckets * self.resize_factor)
 
     def __getitem__(self, key):
         key = str(key)
@@ -69,12 +67,11 @@ class Map:
                del bucket[i] 
                self.length -= 1
                if self.ocupation < self.reduce_threshold:
-                   self.resize(int(self.number_of_buckets / self.resize_factor))
+                   self._resize(int(self.number_of_buckets / self.resize_factor))
                return
             i += 1
 
     def __iter__(self):
-        # iterar pelas chaves
         for bucket in self.buckets:
             for node in bucket:
                 yield node.label, node.value
