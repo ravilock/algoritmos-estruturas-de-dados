@@ -191,13 +191,15 @@ class List:
                 previousNode = currentNode
                 currentNode = currentNode.next if currentNode.next is not None else self.last
 
-ll = List(1, 2, 3, 4, 5)
-# ll.append("Ravi")
-# ll.append("João")
-# ll.append("Jesus")
-# ll.append("Ana")
-print(len(ll), ll)
-print("---------------")
-del ll[::2]
-print(len(ll), ll)
-print("---------------")
+    def count(self, value):
+        count = 0
+        for i in self:
+            if i == value:
+                count += 1
+        return count
+
+    def copy(self):
+        return self[:]
+
+    def reversed(self):
+        return self[::-1]
